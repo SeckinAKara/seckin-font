@@ -1,0 +1,158 @@
+//----------------------Cursive Handwriting Font Code------------------
+//   This is all of the code necessary to make my font work. Without
+//   compiling the TrueType Font using this file, it's a normal TTF
+//   with all of the functionality of the actual font except for the 
+//   loopback feature.
+
+//   I apologize if not all of this is annotated because I wrote parts of
+//   it a while ago and can't remember what some of it does.
+
+//   For more information, see Graphite SIL documentation at http://scripts.sil.org/cms/scripts/page.php?site_id=projects&item_id=graphite_devFont
+
+
+#include "stddef.gdh" //pretty sure this is the standard first .gdl line
+#define example user1 //this defines the variable "example" in the variable slot "user1"
+
+table(glyph) //This forms the framework of the code. It's the table for defining all of the glyph classes to be used in the actual coding later on.
+    clsUppercase = (U+0041..U+005A); //Latin letters A-Z
+    clsLowercase = (U+0061..U+007A); //Latin letters a-z
+    clsNormal = (U+0061 U+0063 U+0065 U+0067 U+006D..U+0073 U+0075..U+0077 U+0079..U+007A U+E036 U+E038 U+E03A U+E03C U+E042..U+E048 U+E04A..U+E04F U+E050 U+E052 U+E054 U+E056 U+E05C..U+E062 U+E064..U+E06A U+E06C U+E06E U+E070 U+E076..U+E07C U+E07E..U+E083); //all letters that can be crossed by a loopback
+    
+    clsStart = (U+0069 U+006A U+0074 U+0078 U+0046  U+0054 U+E024 U+E025 U+E02F U+E033 U+E03E U+E03F U+E049 U+E04D U+E058 U+E059 U+E063 U+E067 U+E072 U+E073 U+E07D U+E081 U+E088 U+E089 U+E091 U+E095 U+E098 U+E099 U+E09A U+E09B U+E0A0 U+E0A1 U+E0A9 U+E0AD U+E0C8 U+E0C9 U+E0D1 U+E0D5 U+E0D9 U+E0DB); //all letters that need to be crossed by a loopback (F, T, i, j, t, and x, as well as their contextual variants
+    
+    clsIsolated = (U+E002..U+E01B); //capital Latin letter isolated variants
+    
+    clsUp = (U+0048 U+0062 U+006F U+0076 U+0077 U+E01D U+E02A U+E031 U+E032 U+E051 U+E05E U+E065 U+E066); //all Latin letters that end above the baseline and therefore require varied latters for connection
+    
+    clsInitial = (U+E01C..U+E035); //lowercase Latin letter initial variatns
+    clsFinal = (U+E036..U+E04F); //lowercase Latin letter final variants
+    clsHigh = (U+E050..U+E069); //lowercase Latin letter "high-start" variants
+    clsHighFinal = (U+E06A..U+E083); //lowercase Latin letter "high-start" as well as final variants (the 'p' in the word 'boop')
+    
+    clsAllLowercase = (clsLowercase, clsInitial, clsFinal, clsHigh, clsHighFinal, U+00DF..U+00F6, U+00F8..U+00FF, U+0101, U+0103, U+0105, U+0107, U+0109, U+010B, U+010D, U+010F, U+0111, U+0113, U+0115,U+0117, U+0119, U+011B, U+011D, U+011F, U+0121, U+0123, U+0125,U+0127, U+0129, U+012B, U+012D, U+012F, U+0131, U+0133, U+0135, U+0137, U+013A, U+013C, U+013E, U+0140, U+0142, U+0144, U+0146, U+0148, U+0149, U+014B, U+014D, U+014F, U+0151, U+0153, U+0155, U+0157, U+0159, U+015B, U+015D, U+015F, U+0161, U+0163, U+0165, U+0167, U+0169, U+016B, U+016D, U+016F, U+0171, U+0173, U+0175, U+0177, U+017A, U+017C, U+017E,U+017F, U+01CE, U+01D0, U+01D2, U+01D4, U+01D6, U+01D8, U+01DA, U+01DC, U+01DF, U+01E1, U+01E3, U+01E7, U+01E9, U+01EB, U+01ED, U+01F0, U+01F5, U+01F9, U+01FB, U+01FD, U+01FF, U+0201, U+0203, U+0205, U+0207, U+0209, U+020B, U+020D, U+020F, U+0211, U+0213, U+0215, U+0217, U+0219, U+021B, U+021F, U+0227, U+0229, U+022B, U+022D, U+022F, U+0231, U+0233, U+0237); //it's quite a long class, but it's just all the previously mentioned lowercase letters as well as ones with diacritics
+    
+    clsTotal = (U+0061 U+0063 U+0065 U+0067 U+0069 U+006A U+006D..U+0073 U+0074 U+0075..U+0077 U+0078 U+0079..U+007A U+E024 U+E025 U+E02F U+E033 U+E036 U+E038 U+E03A U+E03C U+E03E U+E03F U+E042..U+E048 U+E049 U+E04A..U+E04F U+E050 U+E052 U+E054 U+E056 U+E058 U+E059 U+E05C..U+E062 U+E063 U+E064..U+E06A U+E06C U+E06E U+E070 U+E072 U+E073 U+E076..U+E07C U+E07D U+E07E..U+E083); //I think this is all letters that can be crossed by the loopback
+    
+    clsTotalDot = (U+E084..U+E0D7); //this is all characters possible rendered with the loopback above them (they're all coded in the extra blank Unicode slots really far into the code block)
+    
+    clsEnd = (U+0041..U+005A U+0062 U+0064 U+0066 U+0068 U+006B U+006C U+00C0..U+017E U+01CD..U+01E3 U+01E6..U+01ED U+01F0 U+01F4 U+01F5 U+01F8..U+021B U+021E U+021F U+0226..U+0233 U+0237 U+E000..U+E01B U+E01D U+E01F U+E021 U+E023 U+E026 U+E027 U+E037 U+E039 U+E03B U+E03D U+E040 U+E041 U+E051 U+E053 U+E055 U+E057 U+E05A U+E05B U+E06B U+E06D U+E06F U+E071 U+E074 U+E075); //this is all possible letters that CANNOT be crossed by the loopback, so capitals and high letters like 'h' and 'b'
+    
+    clsPunct = (U+0020..U+0040 U+005B..U+0060 U+007B..U+007E U+00A0..U+00BF U+2000..U+200F); //every normal English punctuation mark I bothered to include is in this class
+    
+    clsX = (U+0078 U+E04D U+E067 U+E081); //remember how I said there are 6 variants of 'x'? Well here they are. I had to code 'x' a bit differently from all of the other letters because it's so weird
+    clsXDotted = (U+E0D8..U+E0DB); //and here are the variants of 'x' with the loopbacks above them
+    
+    clsNewX = (U+0078 U+E067);
+    clsNewXDotted = (U+E0EB U+E0EC);
+    
+    clsToTall = (U+0043, U+0046, U+0050, U+E007, U+E004, U+E011); //compiling with grcompiler removes all OpenType rules, so I had to recode all of the variants of capital letters when followed by tall letters. Without this, tall letters like 'h' would go through the tops of letters like C and F that lean a bit into the next glyph's spot
+    clsTall = (U+E001, U+E000, U+E0DC, U+E001, U+E000, U+E0DC); //This is the previous list with all letters replaced with their "tall" variants. You'll notice the second half of the list is a repeat of the first half. I forget the exact reason for this, but it basically ensures that both variants of the necessary letters go to the same tall character because the replacement code later on replaces letters with the letter in the corresponding place of the other list.
+    clsTallStart = (U+0062, U+0066, U+0068, U+006B, U+006C, U+0074); //these are all the letters that require tall capitals, like 'h' and 'l'
+    
+    clsLeftA = (U+E00B, U+E00F, U+E011, U+E015, U+E017, U+E018); //this one is a bit more specific, but it's all letters that require less kerning when following isolated capital A so that the letters aren't weirdly far apart (remember, all OpenType and kerning specifications are gone through grcompiler)
+    clsNewQuote = (U+0047, U+0049, U+004C, U+0054, U+0058, U+E00F, U+E00E); //another specific one, this one deals with kerning issues with quotation marks, but I forget the details
+    clsNewQuote1 = (U+0051, U+0058); //and this one
+    clsNewQuote2 = (U+0044, U+0046, U+E000, U+E002); //and this one too
+    
+    clsTallP = (U+0069 U+006A U+E024 U+E025 U+E03E U+E03F U+E058 U+E059 U+E072 U+E073 U+E088 U+E089 U+E098 U+E099 U+E0B4 U+E0B5 U+E0C8 U+E0C9); //this one is all the letters that require extra space when following 'P' because of the loop thing
+    
+    clsAllUppercase = (clsUppercase, clsIsolated, clsTall, U+00C0..U+00D6, U+00D8..U+00DF, U+0100, U+0102, U+0104, U+0106, U+0108, U+010A, U+010C, U+010E, U+0110, U+0112, U+0114, U+0116, U+0118, U+011A, U+011C, U+011E, U+0120, U+0122, U+0124, U+0126, U+0128, U+012A, U+012C, U+012E, U+0130, U+0132, U+0134, U+0136, U+0139, U+013B, U+013D, U+013F, U+0141, U+0143, U+0145, U+0147, U+014A, U+014C, U+014E, U+0150, U+0152, U+0154, U+0156, U+0158, U+015A, U+015C, U+015E, U+0160, U+0162, U+0164, U+0166, U+0168, U+016A, U+016C, U+016E, U+0170, U+0172, U+0174, U+0176, U+0178, U+0179, U+017B, U+017D, U+01CD, U+01CF, U+01D1, U+01D3, U+01D5, U+01D7, U+01D9, U+01DB, U+01DE, U+01E0, U+01E2, U+01E6, U+01E8, U+01EA, U+01EC, U+01F4, U+01F8, U+01FA, U+01FC, U+01FE, U+0200, U+0202, U+0204, U+0206, U+0208, U+020A, U+020C, U+020E, U+0210, U+0212, U+0214, U+0216, U+0218, U+021A, U+021E, U+0226, U+0228, U+022A, U+022C, U+022E, U+0230, U+0232); 
+//as the title of this one implies, this is every single capital letter I bothered to include in the table
+
+endtable; //the table is finally over! Now it's time for code!
+
+//  This is where things get complicated. In order for the font to work, the code has to make multiple passes through each word to render it all properly. What follows is the "substitution" table that dictates which letters get replaced with what under what circumstances. Each "pass" is a separate time the code runs through the text and examines it. I'm not super sure on the deep mechanics because I got this part working mostly with luck and a lot of guessing, but I'll try to explain it.
+
+table(sub) {MaxRuleLoop = 100; MaxBackup = 100}  //this starts the substitution table. The stuff in brackets means (I think) that the code can only loop through a bit of text 100 times maximum and can only backup 100 glyphs maximum. So words that are over 100 characters long break the loopback function, but I don't think that's a problem enough to justify lagging the font processor.
+    
+    pass(1) //This first pass tags all characters with their appropriate "example" value. This is the only variable needed to do all this and it's basically a numeric code of what each digit has to become.
+
+//This is where "code language" really starts. If you don't understand Graphite syntax, I'll do my best to explain it but you should really read the documentation (see above)
+        
+        U+0050 > U+E0DC / _ clsTallP; //replaces any P's followed by a member of the TallP class with a P with more right-hand kerning
+        U+E011 > U+E0DC / _ clsTallP; //same thing as above but with a different version of P for some reason
+        clsToTall > clsTall / _ clsTallStart; //replaces any lowercase letter after a tall-end character with its tall variant
+        U+0045 > U+E0EA / _ U+006C; //for some reason, I included a separate substitution line for 'E' followed by 'l'
+        U+0045 > U+E0EA / _ U+E041; //same thing as above but with (I think) the final variant of 'l'
+        
+        //  This section replaces capital letters with their isolated variants, but it does it in a strange way because of how Graphite works.
+        
+        //  Graphite works by inserting a virtual cursor into text. At each pass, it looks at the glyph in front of it and looks through the substitution table to see how to deal with it. If one of the substitutions works, it moves on to the next glyph. It looks through the substitution table in written order, so rules closer to the top are tested before ones afterwards. We'll see how this is used to substitute capital letters.
+        
+        clsUppercase > @ / _ clsAllLowercase; // This line first tests to see if an uppercase letter is followed by any lowercase letter. If it is, the uppercase letter is kept in its default cursive state.
+        
+        U+0049 > U+E00A / _ clsAllUppercase; // This section is specifically for the letter 'I' because of a quirk in my handwriting style. When writing 'I' as in the personal pronoun, I keep it in cursive form. This line tests to see if the letter 'I' is followed directly by any capital letters (it's already been tested for lowercase letters by the above line), because if it is, it can't possibly be the personal pronoun. If it isn't the personal pronoun, it's replaced with its isolated variant.
+        U+0049 > U+E00A / clsAllUppercase _; // Same idea here, but this line tests to see if the letter 'I' is preceded by any uppercase letters.
+        U+0049 > @; // This line is only invoked if the above 3 have failed, and it leaves the letter I as its cursive variant.
+        clsUppercase > clsIsolated; // If a capital letter has passed all the above lines, it means it's an isolated letter, so it's changed to its isolated variant.
+        
+        clsLowercase > clsHigh / clsUp _ clsAllLowercase; // This tests if a lowercase letter is between a high-end letter and another lowercase letter. If it is, it's changed to it's high (and medial) variant.
+        clsLowercase > clsHighFinal / clsUp _; // This is the same as above but is only invoked if the letter is not only after a high-end letter but at the end of a word, invoking the high-final variant.
+        clsLowercase > @ / clsAllLowercase _ clsAllLowercase; // If the above two "high checks" fail, the lowercase letter is left alone as long as it's between two normal lowercase letters ...
+        clsLowercase > @ / clsAllUppercase _ clsAllLowercase; // ... or between a normal capital letter and normal lowercase letter.
+        clsLowercase > clsFinal / clsAllLowercase _; // If a lowercase letter failed the above checks AND is preceded by a normal lowercase letter ...
+        clsLowercase > clsFinal / clsAllUppercase _; // ... OR by a normal uppercase letter, it must be in the final position, so it's changed to the final variant.
+        clsLowercase > clsInitial; // AND FINALLY, if a lowercase letter failed ALL ABOVE CHECKS, the only possible choice left is that it's initial. This is the only way I could get the initial variant substitution to work because a letter could be preceded by nothing if it's at the beginning of a string or by punctuation and I didn't know how to account for those.
+
+    endpass; //ends pass(1)
+    
+    pass(2) // Now starts the usage of the "example" variable to tag letters. The previous pass has replaced them with their positional variants, now this one uses the tagging functionality of Graphite to mark them for the loopback.
+    
+        U+E002 > U+E0DD / clsLeftA _; //except this one it fixes the kerning around 'A'
+        
+        clsStart > @ {example = 1}; // Members of the Start class are the ones that have to be dotted/crossed, so they're marked with a value of 1. This means a loopback is needed and can cross this letter.
+        clsEnd > @ {example = 2}; // Members of the End class are the ones that prevent a loopback from passing, so they're marked with 2. This cancels a loopback.
+        
+        U+0022 > U+E0E0 / _ clsNewQuote; //this all deals with kerning of quotation marks it's not very important
+        U+201C > U+E0E5 / _ clsNewQuote;
+        U+0022 > U+E0E1 / _ clsNewQuote1;
+        U+201C > U+E0E6 / _ clsNewQuote1;
+        U+0022 > U+E0E2 / _ clsNewQuote2;
+        U+201C > U+E0E7 / _ clsNewQuote2;
+        U+0027 > U+E0E3 / _ clsNewQuote;
+        U+2018 > U+E0E8 / _ clsNewQuote;
+        U+0027 > U+E0E4 / _ clsNewQuote1;
+        U+2018 > U+E0E9 / _ clsNewQuote1;
+        U+0027 > U+E0E4 / _ clsNewQuote2;
+        U+2018 > U+E0E9 / _ clsNewQuote2;        
+    endpass;   
+    
+    pass(3) //This part of the code is extraordinarily dense, and so I might not be able to explain it all very well, but it essentially does the rest of the loopback marking (so all of it).
+    
+        clsStart > @ {example = 1}; //For some reason, this line was needed to ensure that all members of Start were marked with a value of 1. I have no idea why
+        clsNormal > @ {example = 1} / ANY {example == 1} _; // This is the crux of the loopback. Any "normal" lowercase letter following another letter marked with a value of 1 is itself marked with a value of 1. This creates a cascade through each word that marks every possible letter with a loopback value of 1.
+        
+        clsEnd > @ {example = 2} / ^ ANY _; // And this is where things get complicated. If Grapite's virtual cursor is moving along and it hits a letter in the End class (capitals, high letters), it once again marks that letter with a value of two but then also moves the cursor BACKWARDS (indicated by the caret being placed before ANY character that's before the End character). 
+        
+        clsNormal > @ {example = 1} / ^ ANY {example == 1} _ {example == 1}; // Ok, so now the cursor's been moved back a character. This means that Graphite is now processing characters IT'S ALREADY PROCESSED, so it has to re-mark every character in the word with a new loopback value. This line tells it to mark any normal lowercase letter with a value of 1 IF AND ONLY IF it is ALREADY marked with a value of 1 and it's preceded by another character marked with a value of 1. That way, letters that haven't yet been marked as following a Start character are ignored. The cursor is then once again moved back a character. Also, I think the code broke if I changed this line at all so I'm not 100% sure how else it functions.
+        
+        clsNormal > @ {example = 2} / ^ ANY _ ANY {example == 2};
+        // This line does the opposite of the one above. If the character is followed directly by a 2-valued character (for example, 'h'), the loopback CANNOT reach this letter and so the letter is marked with a 2. The cursor is again moved back one.
+        
+        ANY > @ / clsPunct ^_; // Because a loopback can't cross punctuation, if any is encountered, the character following it is left alone and the cursor is sent back going the original direction.
+        ANY > @; // This is just a fallback line in case nothing above is required and so the cursor continues as normal.
+    endpass;
+    
+    pass(4) // This pass is all about characters in the Start class. The code wouldn't work properly without this pass, so I'm a bit hazy on why exactly it's necessary, but it essentially goes through and makes sure that all the Start characters are marked properly. I think it also deals with some internal loopbacks like in the word 'titular'
+    
+        clsStart {example = 1} / clsStart _; // If a Start letter is preceded by another Start letter, it could use a loopback (again, 'titular'), so it's marked with a 1
+        clsStart {example = 1} / _ ANY {example == 1}; // If a Start letter is followed by any letter marked with a 1, it could use a loopback, so it's marked as 1
+        clsStart {example = 1} / ANY {example == 1} _; // If a Start letter is preceded by anything marked with a 1, it could use a loopback, so it's marked with a 1
+        clsStart {example = 1} / _ clsPunct; // This one is weird. If this line isn't here, punctuation at the end of a word breaks the loopback, so this marks Start letters at the end of a word as 1 if they're followed by pronunciation (like in 'ski.')
+        clsStart {example = 2} / _ ANY; // If all of the above checks fail, it's impossible for a Start letter to have a loopback, so it's marked as 2.
+        
+    endpass;
+    pass(5)
+        
+        clsNewX {example = 4} / ANY {example == 1} _ ANY {example == 2};
+        
+        clsX {example = 3} / ANY {example == 1} _;
+        // This is a really specific one because of how the loopback interacts with 'x'. Since 'x' is crossed by slashing downwards and not by looping through or crossing the top of a letter, the loopback cannot continue if it encounters an 'x'. This is only a problem if the loopback is supposed to continue to the left of 'x', so if anything to the left of 'x' is marked with a 1 and therefore requires a loopback, the 'x' is marked with a value of 3, meaning the loopback goes ABOVE the 'x' and doesn't actually cross the letter. This is seen in words like 'botox' where the loopback skips the 'x' to cross the 't' (and I just realized this means there are more than 6 variants of 'x').
+
+    endpass;
+    pass(6) // Up until this point, the only thing we've done regarding the loopback is mark letters. This pass is the only point at which letters are actually substituted.
+        clsNewX > clsNewXDotted / _ {example == 4};
+        clsX > clsXDotted / _ {example == 3}; // Any 'x' that's marked as a 3 is replaced with it's alternate loopback version
+        clsTotal > clsTotalDot / _ {example == 1}; // Any letter maked with a 1 is replaced with it's loopback version
+    endpass;
+endtable; // And that's it! These are all the rules needed to make the font work. Although it looks like a lot, most of this document deals with defining classes and solving individual kerning problems. The loopback code is very, very dense, though, because it makes use of Graphite's backup feature.
